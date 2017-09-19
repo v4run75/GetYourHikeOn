@@ -28,9 +28,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     private ArrayList<String> trek;
     private Context context;
     Fragment fragment;
+    private MyOnListener onListener;
+
+    public interface MyOnListener{
+        public void OnposClicked(int pos);
+    }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewName;
         TextView textViewName1;
@@ -46,14 +51,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             this.imageViewIcon = (ImageView) itemView.findViewById(R.id.display_trek_image);
             this.linearLayout =(LinearLayout) itemView.findViewById(R.id.linearLayout);
             this.spinner = (Spinner) itemView.findViewById(R.id.spinner);
+            imageViewIcon.setOnClickListener(this);
 
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.d("Size","Item selected");
+
+            onListener.OnposClicked(getAdapterPosition());
         }
     }
 
-    public CustomAdapter(Context context,ArrayList<DataModel> data,ArrayList<String> trek) {
+    public CustomAdapter(Context context,ArrayList<DataModel> data,ArrayList<String> trek,MyOnListener listener) {
         this.dataSet = data;
         this.context=context;
         this.trek=trek;
+        this.onListener = listener;
     }
 
     @Override
@@ -79,18 +93,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         Picasso.with(context)
                 .load(dataSet.get(listPosition).getImage()).resize(400,400).centerInside()
                 .into(imageView);
-
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                fragment = new HomeFragment();
-//                Bundle bundle=new Bundle();
-//                bundle.putString("KUNGSLEDEN","KUNGSLEDEN");
-//                fragment.setArguments(bundle);
-                Toast.makeText(context,"id"+listPosition,Toast.LENGTH_LONG).show();
-
-            }
-        });
+//
+//        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                fragment = new HomeFragment();
+////                Bundle bundle=new Bundle();
+////                bundle.putString("KUNGSLEDEN","KUNGSLEDEN");
+////                fragment.setArguments(bundle);
+//                Toast.makeText(context,"id"+listPosition,Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
 //        textViewName4.setOnTouchListener(new View.OnTouchListener() {
 //
 //            public boolean onTouch(View v, MotionEvent event) {

@@ -219,7 +219,12 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 //        }
         getData();
 
-        adapter = new CustomAdapter(context, data, treks);
+        adapter = new CustomAdapter(context, data, treks, new CustomAdapter.MyOnListener() {
+            @Override
+            public void OnposClicked(int pos) {
+                spinner.setSelection(pos,true);
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         imageView=(ImageView) view.findViewById(R.id.logout);
@@ -302,6 +307,8 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
         //Setting adapter to show the items in the spinner
         spinner.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, treks));
+        spinner.setSelection(1);
+
     }
     private void getHikeData(JSONArray j){
         for(int i=0;i<j.length();i++){
