@@ -51,8 +51,8 @@ public class HomeFragment extends android.support.v4.app.Fragment {
     private Context context;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private static RecyclerView recyclerView;
-    private static ArrayList<DataModel> data;
+    private  RecyclerView recyclerView;
+    private  ArrayList<DataModel> data;
     private Button bookNow,bookLater;
     private Calendar c;
     private Intent intent;
@@ -312,11 +312,13 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 data.add(new DataModel(json.getString("name"),json.getString("location"),i,json.getString("photo")));
 
 
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
+        adapter.notifyDataSetChanged();
     }
 
 }
