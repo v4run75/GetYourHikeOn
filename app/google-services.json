@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "240933850468",
+    "firebase_url": "https://getyourhikeon-d3602.firebaseio.com",
+    "project_id": "getyourhikeon-d3602",
+    "storage_bucket": "getyourhikeon-d3602.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240933850468:android:a3aaff3fa817444a",
+        "android_client_info": {
+          "package_name": "hike.me.webify.getyourhikeon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240933850468-f8ncrpq1nh7255p3e4fvtsam1vfa94hc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgQzaaOZolyixo1lO3Clt6vxGicLKJPo8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
