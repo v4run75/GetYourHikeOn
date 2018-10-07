@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             if (fragment != null) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content, fragment);
-                ft.addToBackStack(null);
                 ft.commit();
             }
             return true;
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         fragment=new HomeFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content, fragment);
-            ft.addToBackStack(null);
             ft.commit();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

@@ -78,6 +78,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         bookNow=(Button) view.findViewById(R.id.bookNow);
         bookLater=(Button) view.findViewById(R.id.bookLater);
         spinner=(Spinner) view.findViewById(R.id.spinner);
+        progressBar=(ProgressBar) view.findViewById(R.id.progress);
         treks=new ArrayList<String>();
         Bundle args = getArguments();
         if (args  != null && args.containsKey("KUNGSLEDEN")){
@@ -222,7 +223,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         adapter = new CustomAdapter(context, data, treks, new CustomAdapter.MyOnListener() {
             @Override
             public void OnposClicked(int pos) {
-                spinner.setSelection(pos,true);
+                spinner.setSelection(pos+1,true);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -265,6 +266,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     public void onResponse(String response) {
                         JSONObject j = null;
                         try {
+                            progressBar.setVisibility(View.INVISIBLE);
                             //Parsing the fetched Json String to JSON Object
                             j = new JSONObject(response);
                             //Storing the Array of JSON String to our JSON Array
@@ -281,7 +283,8 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        progressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(context,"Please Check Your Internet Connection And Restart",Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -307,7 +310,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
         //Setting adapter to show the items in the spinner
         spinner.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, treks));
-        spinner.setSelection(1);
+        spinner.setSelection(0);
 
     }
     private void getHikeData(JSONArray j){

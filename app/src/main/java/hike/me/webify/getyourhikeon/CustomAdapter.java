@@ -41,7 +41,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         TextView textViewName1;
         ImageView imageViewIcon;
         LinearLayout linearLayout;
-        Spinner spinner;
 
 
         public MyViewHolder(View itemView) {
@@ -50,7 +49,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             this.textViewName1 = (TextView) itemView.findViewById(R.id.trek_location);
             this.imageViewIcon = (ImageView) itemView.findViewById(R.id.display_trek_image);
             this.linearLayout =(LinearLayout) itemView.findViewById(R.id.linearLayout);
-            this.spinner = (Spinner) itemView.findViewById(R.id.spinner);
             imageViewIcon.setOnClickListener(this);
 
         }
@@ -58,7 +56,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         @Override
         public void onClick(View view) {
             Log.d("Size","Item selected");
-
             onListener.OnposClicked(getAdapterPosition());
         }
     }
@@ -86,7 +83,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         TextView textViewName = holder.textViewName;
         TextView textViewName1 = holder.textViewName1;
         ImageView imageView = holder.imageViewIcon;
-        final Spinner spinner=holder.spinner;
 
         textViewName.setText(dataSet.get(listPosition).getName());
         textViewName1.setText(dataSet.get(listPosition).getLocation());

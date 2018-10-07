@@ -25,21 +25,21 @@
             android:id="@+id/trek_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="EVEREST BASE CAMP TREK"
+            android:text="TREK NAME"
             android:textColor="@color/colorPrimary"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:textSize="13sp"
-            android:maxLines="1"
             android:ellipsize="marquee"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:singleLine="true" />
         <TextView
             android:id="@+id/trek_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="United States"
+            android:text="Trek Location"
             android:textColor="@color/colorPrimary"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
@@ -47,8 +47,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:textSize="12sp"
-            android:maxLines="1"
-            android:ellipsize="marquee"/>
+            android:ellipsize="marquee"
+            android:singleLine="true" />
     </LinearLayout>
     </android.support.v7.widget.CardView>
 

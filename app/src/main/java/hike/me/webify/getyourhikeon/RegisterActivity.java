@@ -42,7 +42,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
     private EditText editTextEmail,editTextContact,editTextName;
     private EditText editTextPassword;
     private Button buttonSignup;
-    String name,email,password,contact;
+    String name,email,password,contact,uid;
     private TextView textViewSignin;
     Context context;
     FirebaseUser user;
@@ -154,40 +154,41 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                                             }
                                         });
                             }
-//                            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://sscbskronos.esy.es/UserInfo.php",
-//                                    new Response.Listener<String>() {
-//                                        @Override
-//                                        public void onResponse(String s) {
-//                                            //Disimissing the progress dialog
-//                                            //Showing toast message of the response
-//                                        }
-//                                    },
-//                                    new Response.ErrorListener() {
-//                                        @Override
-//                                        public void onErrorResponse(VolleyError volleyError) {
-//                                            //Dismissing the progress dialog
-//
-//                                        }
-//                                    }) {
-//                                @Override
-//                                protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                                    //Creating parameters
-//                                    Map<String, String> params = new Hashtable<String, String>();
-//
-//                                    //Adding parameters
-//                                    params.put("name", name);
-//                                    params.put("contact", contact);
-//                                    params.put("email", email);
-//                                    //returning parameters
-//                                    return params;
-//                                }
-//                            };
-//                            //Creating a Request Queue
-//                            RequestQueue requestQueue = Volley.newRequestQueue(context);
-//
-//                            //Adding request to the queue
-//                            requestQueue.add(stringRequest);
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://getyourhike.esy.es/UserInfo.php",
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String s) {
+                                            //Disimissing the progress dialog
+                                            //Showing toast message of the response
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError volleyError) {
+                                            //Dismissing the progress dialog
+
+                                        }
+                                    }) {
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+
+                                    //Creating parameters
+                                    Map<String, String> params = new Hashtable<String, String>();
+
+                                    //Adding parameters
+                                    params.put("uid",firebaseAuth.getCurrentUser().getUid());
+                                    params.put("name", name);
+                                    params.put("contact", contact);
+                                    params.put("email", email);
+                                    //returning parameters
+                                    return params;
+                                }
+                            };
+                            //Creating a Request Queue
+                            RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+                            //Adding request to the queue
+                            requestQueue.add(stringRequest);
 
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));

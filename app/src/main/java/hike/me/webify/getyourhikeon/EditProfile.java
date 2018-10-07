@@ -31,6 +31,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,7 +46,7 @@ import java.util.Map;
 public class EditProfile extends AppCompatActivity implements View.OnClickListener{
     private Button buttonChoose;
     private Button buttonUpload,submit;
-
+    private JSONArray result;
     private ImageView imageView;
 
     private EditText editTextName,editTextContact;
@@ -49,11 +54,11 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
     private FirebaseUser user;
 
     private Bitmap bitmap;
-    String email;
+    String email,contact;
 
     private int PICK_IMAGE_REQUEST = 1;
 
-    private String UPLOAD_URL ="http://getyourhike.esy.es/profilePic.php";
+    private String UPLOAD_URL ="http://getyourhike.esy.es/DisplayPicture.php";
 
     private String KEY_IMAGE = "image";
     private String KEY_EMAIL = "email";
@@ -172,19 +177,58 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         }
         if (v== submit){
             if(user!=null) {
-
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(editTextName.getText().toString().trim())
-                        .build();
-                user.updateProfile(profileUpdates)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("App", "User profile updated.");
+                if (!(editTextName.getText().toString().trim().equalsIgnoreCase(""))) {
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(editTextName.getText().toString().trim())
+                            .build();
+                    Toast.makeText(getApplicationContext(), "Successfully Changed", Toast.LENGTH_LONG).show();
+                    user.updateProfile(profileUpdates)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("App", "User profile updated.");
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
+                if (!(editTextContact.getText().toString().trim().equalsIgnoreCase(""))) {
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://getyourhike.esy.es/update_contact.php",
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String s) {
+                                    //Disimissing the progress dialog
+                                    //Showing toast message of the response
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+                                    //Dismissing the progress dialog
+
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            //Creating parameters
+                            Map<String, String> params = new Hashtable<String, String>();
+
+                            //Adding parameters
+                            params.put("contact", editTextContact.getText().toString());
+                            params.put("email", email);
+                            //returning parameters
+                            return params;
+                        }
+                    };
+                    //Creating a Request Queue
+                    RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+                    //Adding request to the queue
+                    requestQueue.add(stringRequest);
+                    Toast.makeText(getApplicationContext(), "Successfully Changed", Toast.LENGTH_LONG).show();
+
+                }
             }
         }
     }

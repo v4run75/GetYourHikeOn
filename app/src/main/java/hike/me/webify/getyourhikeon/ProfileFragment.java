@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,6 +30,8 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class ProfileFragment extends android.support.v4.app.Fragment {
     private View view;
@@ -52,26 +55,37 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
         imageView=(ImageView) view.findViewById(R.id.profile);
         name=(TextView) view.findViewById(R.id.name);
         email=(TextView) view.findViewById(R.id.email);
+        contact=(TextView) view.findViewById(R.id.contact);
         current=(Spinner) view.findViewById(R.id.current);
         previous=(Spinner) view.findViewById(R.id.previous);
         current_treks=new ArrayList<String>();
         getData();
+        getProfilePic();
 
 
 //        contact=(TextView) view.findViewById(R.id.contact);
-        Picasso.with(context).load(R.drawable.profile).resize(150,150).centerCrop().into(imageView);
+        Picasso.with(context).load(R.drawable.user).resize(150,150).centerCrop().into(imageView);
         name.setText(user.getDisplayName());
         email.setText(user.getEmail());
 //        contact.setText(user.getPhoneNumber());
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        ImageView edit= (ImageView) view.findViewById(R.id.edit);
+        edit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 // Click action
                 Intent intent = new Intent(context, EditProfile.class);
                 startActivity(intent);
             }
         });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Click action
+//                Intent intent = new Intent(context, EditProfile.class);
+//                startActivity(intent);
+//            }
+//        });
 
         return view;
     }
@@ -88,7 +102,7 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
                             //Storing the Array of JSON String to our JSON Array
                             result = j.getJSONArray("result");
 
-                            //Calling method getStudents to get the students from the JSON Array
+                            //Calling method gethike to get the hikes from the JSON Array
                             getHikes(result);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -99,9 +113,70 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
+                        Toast.makeText(context,"Please Check Your Internet Connection And Restart",Toast.LENGTH_LONG).show();
                     }
                 });
+//        {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//
+//                //Creating parameters
+//                Map<String, String> params = new Hashtable<String, String>();
+//
+//                //Adding parameters
+//                params.put("uid",user.getUid());
+//
+//                //returning parameters
+//                return params;
+//            }
+//        };
 
+        //Creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+    private void getProfilePic(){
+        //Creating a string request
+        StringRequest stringRequest = new StringRequest("http://getyourhike.esy.es/load_user_info.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject j = null;
+                        try {
+                            //Parsing the fetched Json String to JSON Object
+                            j = new JSONObject(response);
+                            //Storing the Array of JSON String to our JSON Array
+                            result = j.getJSONArray("result");
+
+                            //Calling method gethike to get the hikes from the JSON Array
+                            for(int i=0;i<result.length();i++){
+                                try {
+                                    //Getting json object
+                                    JSONObject json = result.getJSONObject(i);
+                                    //Adding the name of the student to array list
+
+                                    if(user.getUid().equalsIgnoreCase(json.getString("id"))) {
+                                        Picasso.with(context).load(json.getString("displayPicture")).resize(150,150).centerCrop().into(imageView);
+                                        contact.setText(json.getString("contact"));
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context,"Please Check Your Internet Connection And Restart",Toast.LENGTH_LONG).show();
+                    }
+                });
         //Creating a request queue
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
@@ -116,8 +191,10 @@ public class ProfileFragment extends android.support.v4.app.Fragment {
                 //Getting json object
                 JSONObject json = j.getJSONObject(i);
                 //Adding the name of the student to array list
-                    current_treks.add(json.getString("destination"));
 
+                if(user.getUid().equalsIgnoreCase(json.getString("id"))) {
+                    current_treks.add(json.getString("destination"));
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
